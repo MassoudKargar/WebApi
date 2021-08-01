@@ -1,5 +1,4 @@
 ﻿using System;
-using System.l;
 using System.Globalization;
 using System.Security.Claims;
 using System.Security.Principal;
@@ -27,7 +26,7 @@ namespace Api.Common.Utilities
         public static T GetUserId<T>(this IIdentity identity) where T : IConvertible
         {
             var userId = identity?.GetUserId();
-            return userId is not null ? (T)Convert.ChangeType(userId, typeof(T), CultureInfo.InvariantCulture) : default;
+            return userId.HasValue() ? (T)Convert.ChangeType(userId, typeof(T), CultureInfo.InvariantCulture) : default;
         }
 
         public static string GetUserName(this IIdentity identity)
