@@ -18,7 +18,7 @@ namespace Api.Common.Utilities
         /// <param name="modelBuilder"></param>
         public static void AddSingularizingTableNameConvention(this ModelBuilder modelBuilder)
         {
-            Pluralizer pluralizer = new Pluralizer();
+            Pluralizer pluralizer = new();
             foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes())
             {
                 string tableName = entityType.GetTableName();
