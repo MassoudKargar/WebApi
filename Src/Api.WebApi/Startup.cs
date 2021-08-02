@@ -2,6 +2,7 @@
 using Api.Data;
 using Api.Data.Contracts;
 using Api.Data.Repositories;
+using Api.WebFramework.Middlewares;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -43,10 +44,12 @@ namespace Api.WebApi
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
+                app.UseExceptionHandler();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Api.WebApi v1"));
             }
+            app.UseCustomExceptionHandler();
 
             app.UseHttpsRedirection();
 

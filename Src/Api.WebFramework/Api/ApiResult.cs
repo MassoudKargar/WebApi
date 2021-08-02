@@ -1,9 +1,10 @@
-﻿using Api.Common.Utilities;
-using System.Linq;
+﻿using System.Linq;
 
-using Api.Entities;
+using Api.Common;
+using Api.Common.Utilities;
 
 using Microsoft.AspNetCore.Mvc;
+
 using Newtonsoft.Json;
 
 namespace Api.WebFramework.Api

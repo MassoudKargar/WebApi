@@ -43,8 +43,6 @@ namespace Api.WebApi.Controllers
         [HttpPost]
         public async Task<ApiResult<User>> Create(UserDto userDto, CancellationToken cancellationToken)
         {
-            var exists = await UserRepository.TableNoTracking.AnyAsync(a => a.UserName == userDto.UserName, cancellationToken);
-            if (exists) return BadRequest();
             User user = new()
             {
                 UserName = userDto.UserName,

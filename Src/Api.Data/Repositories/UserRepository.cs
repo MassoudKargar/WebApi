@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Api.Common.Exceptions;
 using Api.Common.Utilities;
 using Api.Data.Contracts;
 using Api.Entities;
@@ -45,11 +46,7 @@ namespace Api.Data.Repositories
         public async Task AddAsync(User user, string password, CancellationToken cancellationToken)
         {
             var exists = await TableNoTracking.AnyAsync(p => p.UserName == user.UserName, cancellationToken);
-            if (exists)
-                //throw new BadRequestException("نام کاربری تکراری است");
-                throw new Exception("نام کاربری تکراری است");
-
-            //var passwordHash = SecurityHelper.GetSha256Hash(password);
+            if (exists) throw new BadRequestException("نام کاربری تکراری است");
             var passwordHash = SecurityHelper.HashFull(password);
             user.PasswordHash = passwordHash;
             await base.AddAsync(user, cancellationToken);
