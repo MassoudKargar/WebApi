@@ -1,5 +1,7 @@
 
 using Api.Data;
+using Api.Data.Contracts;
+using Api.Data.Repositories;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,6 +30,8 @@ namespace Api.WebApi
                 o.UseSqlServer(Configuration.GetConnectionString("SqlServer"));
             });
             services.AddControllers();
+            services.AddScoped(typeof(IRepository<>),typeof(Repository<>));
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Api.WebApi", Version = "v1" });
