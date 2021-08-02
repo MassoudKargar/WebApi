@@ -15,5 +15,7 @@ namespace Api.Common.Utilities
             return Convert.ToBase64String(byteHash);
             //return BitConverter.ToString(byteHash).Replace("-", "").ToLower();
         }
+        public static string HashFull(string password) => Convert.ToBase64String(SHA512.Create().ComputeHash(SHA384.Create().ComputeHash(SHA256.Create().ComputeHash(SHA1.Create().ComputeHash(MD5.Create().ComputeHash(Encoding.ASCII.GetBytes(password)))))));
+       
     }
 }

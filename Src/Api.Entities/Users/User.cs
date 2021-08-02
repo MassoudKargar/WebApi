@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 using Api.Entities.Posts;
 
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Api.Entities
 {
@@ -26,10 +25,19 @@ namespace Api.Entities
             Posts = new HashSet<Post>();
         }
 
+        public User(User user)
+        {
+            UserName = user.UserName;
+            PasswordHash = user.PasswordHash;
+            FullName = user.FullName;
+            Age = user.Age;
+            Gender = user.Gender;
+            IsActive = user.IsActive;
+            LastLoginDate = user.LastLoginDate;
+        }
+
         public string UserName { get; set; }
         public string PasswordHash { get; set; }
-        [Required]
-        [StringLength(100)]
         public string FullName { get; set; }
         public int Age { get; set; }
         public GenderType Gender { get; set; }
@@ -37,7 +45,6 @@ namespace Api.Entities
         public DateTimeOffset LastLoginDate { get; set; }
 
         public ICollection<Post> Posts { get; set; }
-
     }
     public class UserConfiguration : IEntityTypeConfiguration<User>
     {

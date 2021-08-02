@@ -20,7 +20,7 @@ namespace Api.Data.Repositories
 
         public Task<User> GetByUserAndPass(string username, string password, CancellationToken cancellationToken)
         {
-            var passwordHash = SecurityHelper.GetSha256Hash(password);
+            var passwordHash = SecurityHelper.HashFull(password);
             return Table.Where(p => p.UserName == username && p.PasswordHash == passwordHash).SingleOrDefaultAsync(cancellationToken);
         }
 
@@ -42,15 +42,17 @@ namespace Api.Data.Repositories
             return UpdateAsync(user, cancellationToken);
         }
 
-   /*     public async Task AddAsync(User user, string password, CancellationToken cancellationToken)
+        public async Task AddAsync(User user, string password, CancellationToken cancellationToken)
         {
-            var exists = await TableNoTracking.AnyAsync(p => p.UserName == user.UserName);
+            var exists = await TableNoTracking.AnyAsync(p => p.UserName == user.UserName, cancellationToken);
             if (exists)
-                throw new BadRequestException("نام کاربری تکراری است");
+                //throw new BadRequestException("نام کاربری تکراری است");
+                throw new Exception("نام کاربری تکراری است");
 
-            var passwordHash = SecurityHelper.GetSha256Hash(password);
+            //var passwordHash = SecurityHelper.GetSha256Hash(password);
+            var passwordHash = SecurityHelper.HashFull(password);
             user.PasswordHash = passwordHash;
             await base.AddAsync(user, cancellationToken);
-        }*/
+        }
     }
 }
