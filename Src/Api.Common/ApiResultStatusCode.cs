@@ -20,6 +20,7 @@ namespace Api.Common
         ListEmpty = 4,
 
         [Display(Name = "خطایی در پردازش رخ داده است")]
-        LogicError = 5
+        LogicError = 5,
+        UnAuthorized = 6
     }
 }

@@ -45,8 +45,8 @@ namespace Api.Data.Repositories
 
         public async Task AddAsync(User user, string password, CancellationToken cancellationToken)
         {
-            var exists = await TableNoTracking.AnyAsync(p => p.UserName == user.UserName, cancellationToken);
-            if (exists) throw new BadRequestException("نام کاربری تکراری است");
+            //var exists = await TableNoTracking.AnyAsync(p => p.UserName == user.UserName, cancellationToken);
+            //if (exists) throw new BadRequestException("نام کاربری تکراری است");
             var passwordHash = SecurityHelper.HashFull(password);
             user.PasswordHash = passwordHash;
             await base.AddAsync(user, cancellationToken);

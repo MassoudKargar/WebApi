@@ -1,15 +1,15 @@
 
-using Api.Data;
+using Api.Common;
 using Api.Data.Contracts;
 using Api.Data.Repositories;
+using Api.Services;
+using Api.WebFramework.Configuration;
 using Api.WebFramework.Middlewares;
 
 using ElmahCore.Mvc;
-using ElmahCore.Sql;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -22,21 +22,30 @@ namespace Api.WebApi
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            SiteSetting = configuration.GetSection(nameof(SiteSettings)).Get<SiteSettings>();
         }
 
-        public IConfiguration Configuration { get; }
+        private SiteSettings SiteSetting { get; }
+        private IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(o => o.UseSqlServer(Configuration.GetConnectionString("SqlServer")));
-            services.AddControllers();
-            services.AddElmah<SqlErrorLog>(o =>
-            {
-                o.Path = "/Elmah-Errors";
-                o.ConnectionString = Configuration.GetConnectionString("Elmah");
-                //o.OnPermissionCheck = context => context.User.Identity.IsAuthenticated;
-            });
+            services.Configure<SiteSettings>(Configuration.GetSection(nameof(SiteSettings)));
+
+            services.AddDbContext(Configuration);
+
+            services.AddJwtAuthentication(SiteSetting.JwtSettings);
+
+            services.AddCustomApiVersioning();
+
+            services.AddElmahCore(Configuration, SiteSetting);
+
+            services.AddMinimalMvc();
+
+
+
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddSwaggerGen(c =>
             {
@@ -50,14 +59,14 @@ namespace Api.WebApi
             if (env.IsDevelopment())
             {
                 //app.UseDeveloperExceptionPage();
-                app.UseElmahExceptionPage();
+                //app.UseElmahExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Api.WebApi v1"));
             }
             else
             {
                 app.UseExceptionHandler();
-                app.UseHsts();
+                //app.UseHsts();
             }
 
             app.UseHttpsRedirection();

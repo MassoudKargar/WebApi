@@ -111,7 +111,7 @@ namespace Api.WebApi
                 options.ShutdownTimeoutSeconds = 5;
 
                 options.AddTag("logger", "${logger}");  // Send the logger name as a tag
-                options.TracesSampleRate = 1.0;
+
                 //options.HttpProxy = new WebProxy("http://127.0.0.1:8118", true) { UseDefaultCredentials = true };
                 // Other configuration
             });
