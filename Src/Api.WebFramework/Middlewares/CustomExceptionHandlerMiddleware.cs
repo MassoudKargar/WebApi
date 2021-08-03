@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 using Api.Common;
@@ -20,7 +17,7 @@ namespace Api.WebFramework.Middlewares
     {
         public static void UseCustomExceptionHandler(this IApplicationBuilder app)
         {
-            app.UseMiddleware<CannotUnloadAppDomainException>();
+            app.UseMiddleware<CustomExceptionHandlerMiddleware>();
         }
     }
     public class CustomExceptionHandlerMiddleware
@@ -43,7 +40,7 @@ namespace Api.WebFramework.Middlewares
             catch (AppException ex)
             {
                 Logger.LogError(ex, ex.Message);
-                
+
                 ApiResult apiResult = new(false, ex.StatusCode);
                 var json = JsonConvert.SerializeObject(apiResult);
                 httpContext.Response.ContentType = "application/json";

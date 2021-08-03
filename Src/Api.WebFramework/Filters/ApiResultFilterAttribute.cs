@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
+using Api.Common;
 using Api.WebFramework.Api;
 
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +15,7 @@ namespace Api.WebFramework.Filters
         {
             if (context.Result is OkObjectResult okObjectResult)
             {
-                var apiResult = new ApiResult<object>(true, ApiResultStatusCode.Success, okObjectResult.Value);
+                var apiResult = new ApiResult<object>(true,  ApiResultStatusCode.Success, okObjectResult.Value);
                 context.Result = new JsonResult(apiResult) { StatusCode = okObjectResult.StatusCode };
             }
             else if (context.Result is OkResult okResult)

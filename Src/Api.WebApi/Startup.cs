@@ -4,6 +4,9 @@ using Api.Data.Contracts;
 using Api.Data.Repositories;
 using Api.WebFramework.Middlewares;
 
+using ElmahCore.Mvc;
+using ElmahCore.Sql;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -23,15 +26,17 @@ namespace Api.WebApi
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(o =>
-            {
-                o.UseSqlServer(Configuration.GetConnectionString("SqlServer"));
-            });
+            services.AddDbContext<ApplicationDbContext>(o => o.UseSqlServer(Configuration.GetConnectionString("SqlServer")));
             services.AddControllers();
-            services.AddScoped(typeof(IRepository<>),typeof(Repository<>));
+            services.AddElmah<SqlErrorLog>(o =>
+            {
+                o.Path = "/Elmah-Errors";
+                o.ConnectionString = Configuration.GetConnectionString("Elmah");
+                //o.OnPermissionCheck = context => context.User.Identity.IsAuthenticated;
+            });
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddSwaggerGen(c =>
             {
@@ -39,24 +44,27 @@ namespace Api.WebApi
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCustomExceptionHandler();
             if (env.IsDevelopment())
             {
                 //app.UseDeveloperExceptionPage();
-                app.UseExceptionHandler();
+                app.UseElmahExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Api.WebApi v1"));
             }
-            app.UseCustomExceptionHandler();
+            else
+            {
+                app.UseExceptionHandler();
+                app.UseHsts();
+            }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseElmah();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
