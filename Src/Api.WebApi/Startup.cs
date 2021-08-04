@@ -1,6 +1,7 @@
 
 using Api.Common;
 using Api.WebFramework.Configuration;
+using Api.WebFramework.CustomMapping;
 using Api.WebFramework.Middlewares;
 
 using Autofac;
@@ -11,7 +12,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
 namespace Api.WebApi
@@ -30,6 +30,8 @@ namespace Api.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<SiteSettings>(Configuration.GetSection(nameof(SiteSettings)));
+
+            services.InitializeAutoMapper();
 
             services.AddDbContext(Configuration);
 
@@ -64,17 +66,14 @@ namespace Api.WebApi
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.IntializeDatabase();
+
             app.UseCustomExceptionHandler();
-            //if (env.IsDevelopment())
-            //{
-            //    //app.UseDeveloperExceptionPage();
-            //    //app.UseElmahExceptionPage();
-            //  
-            //}
-            //else
-            //{
-            //    app.UseExceptionHandler();
-            //}
+
+            app.UseHsts(env);
+
+            app.UseHttpsRedirection();
+
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Api.WebApi v1"));
             app.UseHsts(env);

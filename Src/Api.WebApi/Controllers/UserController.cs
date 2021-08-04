@@ -14,6 +14,8 @@ using Api.WebApi.Models;
 using Api.WebFramework.Api;
 using Api.WebFramework.Filters;
 
+using AutoMapper;
+
 using ElmahCore;
 
 using Microsoft.AspNetCore.Authorization;
@@ -36,6 +38,7 @@ namespace Api.WebApi.Controllers
             ILogger<UserController> logger,
             UserManager<User> userManager,
             RoleManager<Role> roleManager,
+            Mapper mapper,
             SignInManager<User> signInManager)
         {
             UserRepository = userRepository;
@@ -43,6 +46,7 @@ namespace Api.WebApi.Controllers
             Logger = logger;
             UserManager = userManager;
             RoleManager = roleManager;
+            this.Mapper = mapper;
             SignInManager = signInManager;
         }
 
@@ -51,6 +55,7 @@ namespace Api.WebApi.Controllers
         private ILogger<UserController> Logger { get; }
         private readonly UserManager<User> UserManager;
         private readonly RoleManager<Role> RoleManager;
+        private readonly Mapper Mapper;
         private readonly SignInManager<User> SignInManager;
 
         [HttpGet]
@@ -80,15 +85,14 @@ namespace Api.WebApi.Controllers
         [HttpPost]
         [AllowAnonymous]
         public virtual async Task<ApiResult<User>> Create(UserDto userDto, CancellationToken cancellationToken)
-        {
+        { 
             Logger.LogError("متد Create فراخوانی شد");
             HttpContext.RiseError(new Exception("متد Create فراخوانی شد"));
 
             //var exists = await userRepository.TableNoTracking.AnyAsync(p => p.UserName == userDto.UserName);
             //if (exists)
             //    return BadRequest("نام کاربری تکراری است");
-
-
+            var user2 = Mapper.Map<User>(userDto);
             var user = new User
             {
                 Age = userDto.Age,
