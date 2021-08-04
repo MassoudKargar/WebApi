@@ -9,12 +9,14 @@ using Api.Common.Utilities;
 using Api.Entities;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Api.Entities.Users;
 
 namespace Api.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<User, Role, int>
     {
-        public ApplicationDbContext([NotNullAttribute] DbContextOptions options) : base(options)
+        public ApplicationDbContext([NotNull] DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
 
@@ -52,7 +54,7 @@ namespace Api.Data
             CleanString();
             return base.SaveChangesAsync(cancellationToken);
         }
-        private void CleanString() 
+        private void CleanString()
         {
             var changedEntities = ChangeTracker.Entries()
                 .Where(x => x.State == EntityState.Added || x.State == EntityState.Modified);
@@ -79,5 +81,5 @@ namespace Api.Data
                 }
             }
         }
-    } 
+    }
 }

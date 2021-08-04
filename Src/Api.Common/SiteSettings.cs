@@ -15,6 +15,10 @@
         public bool PasswordRequireUppercase { get; set; }
         public bool PasswordRequireLowercase { get; set; }
         public bool RequireUniqueEmail { get; set; }
+        public bool RequireConfirmedEmail { get; set; }
+        public bool RequireConfirmedPhoneNumber { get; set; }
+        public int MaxFailedAccessAttempts { get; set; }
+        public double DefaultLockoutTimeSpan { get; set; }
     }
     public class JwtSettings
     {

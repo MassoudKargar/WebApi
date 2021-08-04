@@ -19,8 +19,10 @@ namespace Api.Common
         [Display(Name = "لیست خالی است")]
         ListEmpty = 4,
 
-        [Display(Name = "خطایی در پردازش رخ داده است")]
+        [Display(Name = "خطایی در پردازش رخ داد")]
         LogicError = 5,
+
+        [Display(Name = "خطای احراز هویت")]
         UnAuthorized = 6
     }
 }

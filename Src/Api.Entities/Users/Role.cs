@@ -1,13 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Api.Entities.Users
 {
-    public class Role : BaseEntity
+    public class Role : IdentityRole<int>, IEntity
     {
-        public string Name { get; set; }
         public string Description { get; set; }
     }
     public class RoleConfiguration : IEntityTypeConfiguration<Role>

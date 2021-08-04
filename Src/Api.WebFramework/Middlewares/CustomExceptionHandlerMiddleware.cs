@@ -41,7 +41,7 @@ namespace Api.WebFramework.Middlewares
             {
                 Logger.LogError(ex, ex.Message);
 
-                ApiResult apiResult = new(false, ex.StatusCode);
+                ApiResult apiResult = new(false, ex.ApiStatusCode);
                 var json = JsonConvert.SerializeObject(apiResult);
                 httpContext.Response.ContentType = "application/json";
                 await httpContext.Response.WriteAsync(json);

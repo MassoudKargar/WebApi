@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 using Api.Common;
 using Api.Common.Utilities;
@@ -9,7 +10,6 @@ using Newtonsoft.Json;
 
 namespace Api.WebFramework.Api
 {
-
     public class ApiResult
     {
         public bool IsSuccess { get; set; }

@@ -1,6 +1,5 @@
 
 using System;
-using System.Net;
 using System.Threading.Tasks;
 
 using Autofac.Extensions.DependencyInjection;
@@ -9,11 +8,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
+using NLog;
 using NLog.Config;
 using NLog.Targets;
-using NLog;
 using NLog.Web;
-using Sentry;
 
 
 namespace Api.WebApi
@@ -52,7 +50,7 @@ namespace Api.WebApi
             var logger = LogManager.GetCurrentClassLogger();
 
             // Or you can configure it with code:
-            //UsingCodeConfiguration();
+            UsingCodeConfiguration();
 
             #endregion
 
@@ -78,7 +76,7 @@ namespace Api.WebApi
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
-                .ConfigureLogging(options => options.ClearProviders())
+                //.ConfigureLogging(options => options.ClearProviders())
                 .UseNLog()
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

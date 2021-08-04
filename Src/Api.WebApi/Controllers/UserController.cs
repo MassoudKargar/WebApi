@@ -1,37 +1,57 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Api.Common;
 using Api.Common.Exceptions;
-using Api.Common.Utilities;
 using Api.Data.Contracts;
 using Api.Entities;
+using Api.Entities.Users;
 using Api.Services;
 using Api.WebApi.Models;
 using Api.WebFramework.Api;
 using Api.WebFramework.Filters;
 
+using ElmahCore;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Api.WebApi.Controllers
 {
     [Route("api/[Controller]")]
     [ApiController]
     [ApiResultFilter]
-    [Authorize]
     public class UserController : ControllerBase
     {
-        public UserController(IUserRepository userRepository, IJwtService jwtService)
+        public UserController(
+            IUserRepository userRepository,
+            IJwtService jwtService,
+            ILogger<UserController> logger,
+            UserManager<User> userManager,
+            RoleManager<Role> roleManager,
+            SignInManager<User> signInManager)
         {
             UserRepository = userRepository;
             JwtService = jwtService;
+            Logger = logger;
+            UserManager = userManager;
+            RoleManager = roleManager;
+            SignInManager = signInManager;
         }
 
         private IUserRepository UserRepository { get; }
         private IJwtService JwtService { get; }
+        private ILogger<UserController> Logger { get; }
+        private readonly UserManager<User> UserManager;
+        private readonly RoleManager<Role> RoleManager;
+        private readonly SignInManager<User> SignInManager;
 
         [HttpGet]
         public async Task<List<User>> Get(CancellationToken cancellationToken)
@@ -47,36 +67,61 @@ namespace Api.WebApi.Controllers
             if (user is null) return NotFound();
             return user;
         }
-        [HttpGet("[action]")]
+        [HttpGet("/[action]")]
         [AllowAnonymous]
-        public async Task<string> Token(string userName, string password, CancellationToken cancellationToken)
+        public async Task<AccessToken> Token(string userName, string password, CancellationToken cancellationToken)
         {
+
             var user = await UserRepository.GetByUserAndPass(userName, password, cancellationToken);
             if (user is null) throw new BadRequestException("نام کاربری یا رمز عبور اشتباه است");
-            return JwtService.Generate(user);
+            //await UserRepository.UpdateSecurityStampAsync(user, cancellationToken);
+            return await JwtService.GenerateAsync(user);
         }
         [HttpPost]
-        [Authorize(Roles = "Admin")]
-        public async Task<ApiResult<User>> Create(UserDto userDto, CancellationToken cancellationToken)
+        [AllowAnonymous]
+        public virtual async Task<ApiResult<User>> Create(UserDto userDto, CancellationToken cancellationToken)
         {
-           var userName = HttpContext.User.Identity.GetUserName();
-           var userId = HttpContext.User.Identity.GetUserId<int>();
+            Logger.LogError("متد Create فراخوانی شد");
+            HttpContext.RiseError(new Exception("متد Create فراخوانی شد"));
 
-            User user = new()
+            //var exists = await userRepository.TableNoTracking.AnyAsync(p => p.UserName == userDto.UserName);
+            //if (exists)
+            //    return BadRequest("نام کاربری تکراری است");
+
+
+            var user = new User
             {
-                UserName = userDto.UserName,
-                FullName = userDto.FullName,
                 Age = userDto.Age,
+                FullName = userDto.FullName,
                 Gender = userDto.Gender,
+                UserName = userDto.UserName,
+                Email = userDto.Email
             };
-            await UserRepository.AddAsync(user, userDto.Password, cancellationToken);
-            return Ok(user);
+            try
+            {
+                var result = await UserManager.CreateAsync(user, userDto.Password);
+                var result2 = await RoleManager.CreateAsync(new Role
+                {
+                    Name = "Admin",
+                    Description = "admin role"
+                });
+                var result3 = await UserManager.AddToRoleAsync(user, "Admin");
+
+            }
+            catch (AppException e)
+            {
+                throw new AppException(ApiResultStatusCode.NotFound, "مقادیر ورودی صحیح نم یباشند", HttpStatusCode.NotFound, e, null);
+            }
+
+            //await userRepository.AddAsync(user, userDto.Password, cancellationToken);
+            return user;
         }
 
         [HttpPut]
-        public async Task<ApiResult> Update(int id, User user, CancellationToken cancellationToken)
+        public virtual async Task<ApiResult> Update(int id, User user, CancellationToken cancellationToken)
         {
             var updateUser = await UserRepository.GetByIdAsync(cancellationToken, id);
+
             updateUser.UserName = user.UserName;
             updateUser.PasswordHash = user.PasswordHash;
             updateUser.FullName = user.FullName;
@@ -84,16 +129,21 @@ namespace Api.WebApi.Controllers
             updateUser.Gender = user.Gender;
             updateUser.IsActive = user.IsActive;
             updateUser.LastLoginDate = user.LastLoginDate;
+
             await UserRepository.UpdateAsync(updateUser, cancellationToken);
+
             return Ok();
         }
 
-        [HttpDelete]
-        public async Task<ApiResult> Delete(int id, CancellationToken cancellationToken)
+
+        [HttpDelete("{id:int}")]
+        public virtual async Task<ApiResult> Delete(int id, CancellationToken cancellationToken)
         {
             var user = await UserRepository.GetByIdAsync(cancellationToken, id);
             await UserRepository.DeleteAsync(user, cancellationToken);
+
             return Ok();
         }
+
     }
 }

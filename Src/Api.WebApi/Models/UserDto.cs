@@ -22,6 +22,10 @@ namespace Api.WebApi.Models
         [Required]
         public GenderType Gender { get; set; }
 
+        [Required]
+        [StringLength(100)]
+        public string Email { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (UserName.Equals("test", StringComparison.OrdinalIgnoreCase)) yield return new ValidationResult("نام کاربری نمیتواند test باشد", new[] { nameof(UserName) });

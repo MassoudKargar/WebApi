@@ -1,10 +1,9 @@
 
 using Api.Common;
-using Api.Data.Contracts;
-using Api.Data.Repositories;
-using Api.Services;
 using Api.WebFramework.Configuration;
 using Api.WebFramework.Middlewares;
+
+using Autofac;
 
 using ElmahCore.Mvc;
 
@@ -40,34 +39,45 @@ namespace Api.WebApi
 
             services.AddElmahCore(Configuration, SiteSetting);
 
+            services.AddCustomIdentity(SiteSetting.IdentitySettings);
+
             services.AddMinimalMvc();
 
-
-
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddScoped<IJwtService, JwtService>();
-            services.AddScoped<IUserRepository, UserRepository>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Api.WebApi", Version = "v1" });
             });
+
+            // Don't create a ContainerBuilder for Autofac here, and don't call builder.Populate()
+            // That happens in the AutofacServiceProviderFactory for you.
         }
+
+        // ConfigureContainer is where you can register things directly with Autofac. 
+        // This runs after ConfigureServices so the things ere will override registrations made in ConfigureServices.
+        // Don't build the container; that gets done for you by the factory.
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            //Register Services to Autofac ContainerBuilder
+            builder.AddServices();
+        }
+
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseCustomExceptionHandler();
-            if (env.IsDevelopment())
-            {
-                //app.UseDeveloperExceptionPage();
-                //app.UseElmahExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Api.WebApi v1"));
-            }
-            else
-            {
-                app.UseExceptionHandler();
-                //app.UseHsts();
-            }
+            //if (env.IsDevelopment())
+            //{
+            //    //app.UseDeveloperExceptionPage();
+            //    //app.UseElmahExceptionPage();
+            //  
+            //}
+            //else
+            //{
+            //    app.UseExceptionHandler();
+            //}
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Api.WebApi v1"));
+            app.UseHsts(env);
 
             app.UseHttpsRedirection();
             app.UseRouting();

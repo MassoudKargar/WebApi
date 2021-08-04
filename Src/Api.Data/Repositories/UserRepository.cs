@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Api.Common.Exceptions;
 using Api.Common.Utilities;
 using Api.Data.Contracts;
 using Api.Entities;
@@ -27,7 +26,7 @@ namespace Api.Data.Repositories
 
         public Task UpdateSecurityStampAsync(User user, CancellationToken cancellationToken)
         {
-            //user.SecurityStamp = Guid.NewGuid();
+            user.SecurityStamp = Guid.NewGuid().ToString("D");
             return UpdateAsync(user, cancellationToken);
         }
 
