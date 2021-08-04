@@ -30,12 +30,12 @@ namespace Api.WebApi.Controllers
     [Route("api/[Controller]")]
     [ApiController]
     [ApiResultFilter]
-    public class UserController : ControllerBase
+    public class Users : ControllerBase
     {
-        public UserController(
+        public Users(
             IUserRepository userRepository,
             IJwtService jwtService,
-            ILogger<UserController> logger,
+            ILogger<Users> logger,
             UserManager<User> userManager,
             RoleManager<Role> roleManager,
             Mapper mapper,
@@ -52,7 +52,7 @@ namespace Api.WebApi.Controllers
 
         private IUserRepository UserRepository { get; }
         private IJwtService JwtService { get; }
-        private ILogger<UserController> Logger { get; }
+        private ILogger<Users> Logger { get; }
         private readonly UserManager<User> UserManager;
         private readonly RoleManager<Role> RoleManager;
         private readonly Mapper Mapper;
