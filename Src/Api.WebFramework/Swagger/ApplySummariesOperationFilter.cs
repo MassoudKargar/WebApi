@@ -56,8 +56,8 @@ namespace Api.WebFramework.Swagger
                 //if (!operation.Parameters[0].Description.HasValue())
                 //    operation.Parameters[0].Description = $"A unique id for the {singularizeName}";
 
-                if (!operation.Parameters[0].Description.HasValue())
-                    operation.Parameters[0].Description = $"A {singularizeName} representation";
+                if (!operation.Parameters[1].Description.HasValue())
+                    operation.Parameters[1].Description = $"A {singularizeName} representation";
             }
             else if (IsActionName("Delete", "Remove"))
             {

@@ -33,13 +33,13 @@ namespace Api.WebApi
 
             services.AddDbContext(Configuration);
 
-            services.AddJwtAuthentication(SiteSetting.JwtSettings);
-
-            services.AddElmahCore(Configuration, SiteSetting);
-
             services.AddCustomIdentity(SiteSetting.IdentitySettings);
 
             services.AddMinimalMvc();
+
+            services.AddElmahCore(Configuration, SiteSetting);
+
+            services.AddJwtAuthentication(SiteSetting.JwtSettings);
 
             services.AddCustomApiVersioning();
 

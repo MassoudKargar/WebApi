@@ -14,10 +14,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.WebApi.Controllers.V2
 {
+
     [ApiVersion("2")]
     public class Posts : V1.Posts
     {
-        public Posts(IRepository<Post> repository, IMapper mapper) 
+        public Posts(IRepository<Post> repository, IMapper mapper)
             : base(repository, mapper)
         {
         }
@@ -27,19 +28,38 @@ namespace Api.WebApi.Controllers.V2
             return base.Create(dto, cancellationToken);
         }
 
+        [NonAction]
         public override Task<ApiResult> Delete(Guid id, CancellationToken cancellationToken)
         {
             return base.Delete(id, cancellationToken);
         }
 
-        public override Task<ActionResult<List<PostSelectDto>>> Get(CancellationToken cancellationToken)
+        public async override Task<ActionResult<List<PostSelectDto>>> Get(CancellationToken cancellationToken)
         {
-            return base.Get(cancellationToken);
+            return await Task.FromResult(new List<PostSelectDto>
+            {
+                new PostSelectDto
+                {
+                     FullTitle = "FullTitle",
+                     AuthorFullName =  "AuthorFullName",
+                     CategoryName = "CategoryName",
+                     Description = "Description",
+                     Title = "Title",
+                }
+            });
         }
 
-        public override Task<ApiResult<PostSelectDto>> Get(Guid id, CancellationToken cancellationToken)
+        public async override Task<ApiResult<PostSelectDto>> Get(Guid id, CancellationToken cancellationToken)
         {
-            return base.Get(id, cancellationToken);
+            if (Guid.Empty == id)
+                return NotFound();
+            return await base.Get(id, cancellationToken);
+        }
+
+        [HttpGet("Test")]
+        public ActionResult Test()
+        {
+            return Content("This is test");
         }
 
         public override Task<ApiResult<PostSelectDto>> Update(Guid id, PostDto dto, CancellationToken cancellationToken)

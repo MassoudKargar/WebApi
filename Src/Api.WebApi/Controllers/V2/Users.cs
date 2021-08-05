@@ -19,8 +19,19 @@ namespace Api.WebApi.Controllers.V2
     [ApiVersion("2")]
     public class Users : V1.Users
     {
-        public Users(IUserRepository userRepository, IJwtService jwtService, ILogger<V1.Users> logger, UserManager<User> userManager, RoleManager<Role> roleManager)
-            : base(userRepository, jwtService, logger, userManager, roleManager)
+        public Users(
+            IUserRepository userRepository, 
+            ILogger<V1.Users> logger, 
+            IJwtService jwtService,
+            UserManager<User> userManager,
+            RoleManager<Role> roleManager, 
+            SignInManager<User> signInManager) 
+            : base(userRepository,
+                  logger,
+                  jwtService,
+                  userManager,
+                  roleManager,
+                  signInManager)
         {
         }
 
@@ -34,7 +45,7 @@ namespace Api.WebApi.Controllers.V2
             return base.Delete(id, cancellationToken);
         }
 
-        public override Task<List<User>> Get(CancellationToken cancellationToken)
+        public override Task<ActionResult<List<User>>> Get(CancellationToken cancellationToken)
         {
             return base.Get(cancellationToken);
         }
@@ -44,9 +55,9 @@ namespace Api.WebApi.Controllers.V2
             return base.Get(id, cancellationToken);
         }
 
-        public override Task<AccessToken> Token(string userName, string password, CancellationToken cancellationToken)
+        public override Task<ActionResult> Token([FromForm] TokenRequest tokenRequest, CancellationToken cancellationToken)
         {
-            return base.Token(userName, password, cancellationToken);
+            return base.Token(tokenRequest, cancellationToken);
         }
 
         public override Task<ApiResult> Update(int id, User user, CancellationToken cancellationToken)

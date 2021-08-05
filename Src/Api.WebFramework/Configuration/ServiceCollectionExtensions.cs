@@ -62,10 +62,48 @@ namespace Api.WebFramework.Configuration
             {
                 option.SerializerSettings.Converters.Add(new StringEnumConverter());
                 option.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                option.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
-                option.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+                //option.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
+                //option.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
             });
             services.AddSwaggerGenNewtonsoftSupport();
+
+            #region Old way (We don't need this from ASP.NET Core 3.0 onwards)
+            ////https://github.com/aspnet/Mvc/blob/release/2.2/src/Microsoft.AspNetCore.Mvc/MvcServiceCollectionExtensions.cs
+            //services.AddMvcCore(options =>
+            //{
+            //    options.Filters.Add(new AuthorizeFilter());
+
+            //    //Like [ValidateAntiforgeryToken] attribute but dose not validatie for GET and HEAD http method
+            //    //You can ingore validate by using [IgnoreAntiforgeryToken] attribute
+            //    //Use this filter when use cookie 
+            //    //options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+
+            //    //options.UseYeKeModelBinder();
+            //})
+            //.AddApiExplorer()
+            //.AddAuthorization()
+            //.AddFormatterMappings()
+            //.AddDataAnnotations()
+            //.AddJsonOptions(option =>
+            //{
+            //    //option.JsonSerializerOptions
+            //})
+            //.AddNewtonsoftJson(/*option =>
+            //{
+            //    option.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
+            //    option.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+            //}*/)
+
+            ////Microsoft.AspNetCore.Mvc.Formatters.Json
+            ////.AddJsonFormatters(/*options =>
+            ////{
+            ////    options.Formatting = Newtonsoft.Json.Formatting.Indented;
+            ////    options.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+            ////}*/)
+
+            //.AddCors()
+            //.SetCompatibilityVersion(CompatibilityVersion.Latest); //.SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+            #endregion
         }
 
         public static void AddElmahCore(this IServiceCollection services, IConfiguration configuration, SiteSettings siteSetting)
@@ -80,7 +118,6 @@ namespace Api.WebFramework.Configuration
 
         public static void AddJwtAuthentication(this IServiceCollection services, JwtSettings jwtSettings)
         {
-            
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -90,6 +127,7 @@ namespace Api.WebFramework.Configuration
             {
                 var secretKey = Encoding.UTF8.GetBytes(jwtSettings.SecretKey);
                 var encryptionKey = Encoding.UTF8.GetBytes(jwtSettings.EncryptKey);
+
                 var validationParameters = new TokenValidationParameters
                 {
                     ClockSkew = TimeSpan.Zero, // default: 5 min
@@ -142,7 +180,7 @@ namespace Api.WebFramework.Configuration
                         var userId = claimsIdentity.GetUserId<int>();
                         var user = await userRepository.GetByIdAsync(context.HttpContext.RequestAborted, userId);
 
-                        //if (user.SecurityStamp != securityStamp)
+                        //if (user.SecurityStamp != Guid.Parse(securityStamp))
                         //    context.Fail("Token security stamp is not valid.");
 
                         var validatedUser = await signInManager.ValidateSecurityStampAsync(context.Principal);

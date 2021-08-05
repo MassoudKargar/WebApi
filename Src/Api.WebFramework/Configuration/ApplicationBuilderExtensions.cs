@@ -1,6 +1,7 @@
 ﻿
 using Api.Common.Utilities;
 using Api.Data;
+using Api.Services.DataInitializer;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -16,7 +17,10 @@ namespace Api.WebFramework.Configuration
         {
             Assert.NotNull(app, nameof(app));
             Assert.NotNull(env, nameof(env));
-            if (!env.IsDevelopment()) app.UseHsts();
+
+            if (!env.IsDevelopment())
+                app.UseHsts();
+
             return app;
         }
 
@@ -33,9 +37,9 @@ namespace Api.WebFramework.Configuration
             //Applies any pending migrations for the context to the database like (Update-Database)
             dbContext.Database.Migrate();
 
-            //var dataInitializers = scope.ServiceProvider.GetServices<IDataInitializer>();
-            //foreach (var dataInitializer in dataInitializers)
-            //    dataInitializer.InitializeData();
+            var dataInitializers = scope.ServiceProvider.GetServices<IDataInitializer>();
+            foreach (var dataInitializer in dataInitializers)
+                dataInitializer.InitializeData();
 
             return app;
         }

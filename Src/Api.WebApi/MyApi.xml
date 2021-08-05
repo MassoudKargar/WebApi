@@ -4,5 +4,25 @@
         <name>Api.WebApi</name>
     </assembly>
     <members>
+        <member name="P:Api.WebApi.Controllers.V1.AddressDto.Country">
+            <summary>
+            3-letter ISO country code
+            </summary>
+            <example>Iran</example>
+        </member>
+        <member name="P:Api.WebApi.Controllers.V1.AddressDto.City">
+            <summary>
+            Name of city
+            </summary>
+            <example>Seattle</example>
+        </member>
+        <member name="M:Api.WebApi.Controllers.V1.Users.Token(Api.WebApi.Models.TokenRequest,System.Threading.CancellationToken)">
+            <summary>
+            This method generate JWT Token
+            </summary>
+            <param name="tokenRequest">The information of token request</param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
     </members>
 </doc>

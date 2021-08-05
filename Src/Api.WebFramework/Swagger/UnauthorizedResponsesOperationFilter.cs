@@ -9,7 +9,6 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Api.WebFramework.Swagger
 {
-
     public class UnauthorizedResponsesOperationFilter : IOperationFilter
     {
         private readonly bool includeUnauthorizedAndForbiddenResponses;

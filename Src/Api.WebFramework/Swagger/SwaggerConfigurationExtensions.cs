@@ -70,7 +70,6 @@ namespace Api.WebFramework.Swagger
                 //options.DescribeAllParametersInCamelCase();
                 //options.DescribeStringEnumsInCamelCase()
                 //options.UseReferencedDefinitionsForEnums()
-
                 //options.IgnoreObsoleteActions();
                 //options.IgnoreObsoleteProperties();
 
@@ -106,7 +105,6 @@ namespace Api.WebFramework.Swagger
                 //{
                 //    {"Bearer", new string[] { }}
                 //});
-                #endregion
 
                 //options.AddSecurityRequirement(new OpenApiSecurityRequirement
                 //{
@@ -118,6 +116,7 @@ namespace Api.WebFramework.Swagger
                 //        Array.Empty<string>() //new[] { "readAccess", "writeAccess" }
                 //    }
                 //});
+                #endregion
 
                 //OAuth2Scheme
                 options.AddSecurityDefinition("OAuth2", new OpenApiSecurityScheme
