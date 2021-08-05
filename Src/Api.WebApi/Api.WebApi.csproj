@@ -5,6 +5,9 @@
     <UserSecretsId>fab26f80-48ba-4edb-8224-a18cddec59a6</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <DocumentationFile>D:\Development\WebApi\Src\Api.WebApi\MyApi.xml</DocumentationFile>
+    <BaseOutputPath>bin\Debug\</BaseOutputPath>
   </PropertyGroup>
 
   <ItemGroup>

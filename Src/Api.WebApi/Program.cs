@@ -50,7 +50,7 @@ namespace Api.WebApi
             var logger = LogManager.GetCurrentClassLogger();
 
             // Or you can configure it with code:
-            UsingCodeConfiguration();
+            //UsingCodeConfiguration();
 
             #endregion
 
@@ -76,7 +76,7 @@ namespace Api.WebApi
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
-                //.ConfigureLogging(options => options.ClearProviders())
+                .ConfigureLogging(options => options.ClearProviders())
                 .UseNLog()
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

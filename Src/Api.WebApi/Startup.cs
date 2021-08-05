@@ -3,16 +3,14 @@ using Api.Common;
 using Api.WebFramework.Configuration;
 using Api.WebFramework.CustomMapping;
 using Api.WebFramework.Middlewares;
+using Api.WebFramework.Swagger;
 
 using Autofac;
-
-using ElmahCore.Mvc;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
 
 namespace Api.WebApi
 {
@@ -37,26 +35,16 @@ namespace Api.WebApi
 
             services.AddJwtAuthentication(SiteSetting.JwtSettings);
 
-            services.AddCustomApiVersioning();
-
             services.AddElmahCore(Configuration, SiteSetting);
 
             services.AddCustomIdentity(SiteSetting.IdentitySettings);
 
             services.AddMinimalMvc();
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Api.WebApi", Version = "v1" });
-            });
+            services.AddCustomApiVersioning();
 
-            // Don't create a ContainerBuilder for Autofac here, and don't call builder.Populate()
-            // That happens in the AutofacServiceProviderFactory for you.
+            services.AddSwagger();
         }
-
-        // ConfigureContainer is where you can register things directly with Autofac. 
-        // This runs after ConfigureServices so the things ere will override registrations made in ConfigureServices.
-        // Don't build the container; that gets done for you by the factory.
         public void ConfigureContainer(ContainerBuilder builder)
         {
             //Register Services to Autofac ContainerBuilder
@@ -74,15 +62,15 @@ namespace Api.WebApi
 
             app.UseHttpsRedirection();
 
-            app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Api.WebApi v1"));
-            app.UseHsts(env);
+            app.UseSwaggerAndUI();
 
-            app.UseHttpsRedirection();
+            app.UseElmahCore(SiteSetting);
+
             app.UseRouting();
+
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseElmah();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

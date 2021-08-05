@@ -12,9 +12,6 @@ using Api.Entities.Users;
 using Api.Services;
 using Api.WebApi.Models;
 using Api.WebFramework.Api;
-using Api.WebFramework.Filters;
-
-using AutoMapper;
 
 using ElmahCore;
 
@@ -25,29 +22,23 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Api.WebApi.Controllers
+namespace Api.WebApi.Controllers.V1
 {
-    [Route("api/[Controller]")]
-    [ApiController]
-    [ApiResultFilter]
-    public class Users : ControllerBase
+    [ApiVersion("1")]
+    public class Users : BaseController
     {
         public Users(
             IUserRepository userRepository,
             IJwtService jwtService,
             ILogger<Users> logger,
             UserManager<User> userManager,
-            RoleManager<Role> roleManager,
-            Mapper mapper,
-            SignInManager<User> signInManager)
+            RoleManager<Role> roleManager)
         {
             UserRepository = userRepository;
             JwtService = jwtService;
             Logger = logger;
             UserManager = userManager;
             RoleManager = roleManager;
-            this.Mapper = mapper;
-            SignInManager = signInManager;
         }
 
         private IUserRepository UserRepository { get; }
@@ -55,18 +46,16 @@ namespace Api.WebApi.Controllers
         private ILogger<Users> Logger { get; }
         private readonly UserManager<User> UserManager;
         private readonly RoleManager<Role> RoleManager;
-        private readonly Mapper Mapper;
-        private readonly SignInManager<User> SignInManager;
 
         [HttpGet]
-        public async Task<List<User>> Get(CancellationToken cancellationToken)
+        public virtual async Task<List<User>> Get(CancellationToken cancellationToken)
         {
             var users = await UserRepository.TableNoTracking.ToListAsync(cancellationToken);
             return users;
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ApiResult<User>> Get(int id, CancellationToken cancellationToken)
+        public virtual async Task<ApiResult<User>> Get(int id, CancellationToken cancellationToken)
         {
             var user = await UserRepository.GetByIdAsync(cancellationToken, id);
             if (user is null) return NotFound();
@@ -74,7 +63,7 @@ namespace Api.WebApi.Controllers
         }
         [HttpGet("/[action]")]
         [AllowAnonymous]
-        public async Task<AccessToken> Token(string userName, string password, CancellationToken cancellationToken)
+        public virtual async Task<AccessToken> Token(string userName, string password, CancellationToken cancellationToken)
         {
 
             var user = await UserRepository.GetByUserAndPass(userName, password, cancellationToken);
@@ -85,14 +74,10 @@ namespace Api.WebApi.Controllers
         [HttpPost]
         [AllowAnonymous]
         public virtual async Task<ApiResult<User>> Create(UserDto userDto, CancellationToken cancellationToken)
-        { 
+        {
             Logger.LogError("متد Create فراخوانی شد");
             HttpContext.RiseError(new Exception("متد Create فراخوانی شد"));
 
-            //var exists = await userRepository.TableNoTracking.AnyAsync(p => p.UserName == userDto.UserName);
-            //if (exists)
-            //    return BadRequest("نام کاربری تکراری است");
-            var user2 = Mapper.Map<User>(userDto);
             var user = new User
             {
                 Age = userDto.Age,
