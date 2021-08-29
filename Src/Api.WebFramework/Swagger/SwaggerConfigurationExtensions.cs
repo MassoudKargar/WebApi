@@ -75,6 +75,7 @@ namespace Api.WebFramework.Swagger
 
                 options.SwaggerDoc("v1", new OpenApiInfo { Version = "v1", Title = "API V1" });
                 options.SwaggerDoc("v2", new OpenApiInfo { Version = "v2", Title = "API V2" });
+                options.SwaggerDoc("v3", new OpenApiInfo { Version = "v3", Title = "API V3" });
 
                 #region Filters
                 //Enable to use [SwaggerRequestExample] & [SwaggerResponseExample]
@@ -201,6 +202,7 @@ namespace Api.WebFramework.Swagger
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "V1 Docs");
                 options.SwaggerEndpoint("/swagger/v2/swagger.json", "V2 Docs");
+                options.SwaggerEndpoint("/swagger/v3/swagger.json", "V3 Docs");
 
                 #region Customizing
                 //// Display

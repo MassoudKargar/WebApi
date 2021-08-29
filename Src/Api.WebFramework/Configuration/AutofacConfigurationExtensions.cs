@@ -2,7 +2,9 @@
 using Api.Common;
 using Api.Data;
 using Api.Data.Contracts;
+using Api.Data.Contracts.DapperInterfaces;
 using Api.Data.Repositories;
+using Api.Data.Repositories.DapperServices;
 using Api.Entities;
 using Api.Services;
 
@@ -16,6 +18,7 @@ namespace Api.WebFramework.Configuration
         {
             //RegisterType > As > Liftetime
             containerBuilder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>)).InstancePerLifetimeScope();
+            containerBuilder.RegisterGeneric(typeof(DapperService<>)).As(typeof(IDapperInterface<>)).InstancePerLifetimeScope();
 
             var commonAssembly = typeof(SiteSettings).Assembly;
             var entitiesAssembly = typeof(IEntity).Assembly;

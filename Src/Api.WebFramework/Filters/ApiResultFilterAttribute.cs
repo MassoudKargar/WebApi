@@ -31,11 +31,11 @@ namespace Api.WebFramework.Filters
                 {
                     case ValidationProblemDetails validationProblemDetails:
                         var errorMessages = validationProblemDetails.Errors.SelectMany(p => p.Value).Distinct();
-                        message = string.Join(" | ", errorMessages);
+                        message = string.Join(" | \n ", errorMessages);
                         break;
                     case SerializableError errors:
                         var errorMessages2 = errors.SelectMany(p => (string[])p.Value).Distinct();
-                        message = string.Join(" | ", errorMessages2);
+                        message = string.Join(" | \n", errorMessages2);
                         break;
                     case var value when value != null && !(value is ProblemDetails):
                         message = badRequestObjectResult.Value.ToString();

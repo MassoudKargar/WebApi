@@ -1,5 +1,7 @@
 
 using Api.Common;
+using Api.Data.Contracts.DapperInterfaces;
+using Api.Data.Repositories.DapperServices;
 using Api.WebFramework.Configuration;
 using Api.WebFramework.CustomMapping;
 using Api.WebFramework.Middlewares;
@@ -28,7 +30,6 @@ namespace Api.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<SiteSettings>(Configuration.GetSection(nameof(SiteSettings)));
-
             services.InitializeAutoMapper();
 
             services.AddDbContext(Configuration);
