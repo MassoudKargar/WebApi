@@ -133,7 +133,7 @@ namespace Api.WebFramework.Api
         public virtual async Task<ApiResult<TSelectDto>> Create(TDto dto, CancellationToken cancellationToken)
         {
             var model = dto.ToEntity(Mapper);
-            await DapperInterface.AddWithSpAsync(model, cancellationToken);
+            await DapperInterface.AddAsync(model, cancellationToken);
 
             //await Repository.AddAsync(model, cancellationToken);
 

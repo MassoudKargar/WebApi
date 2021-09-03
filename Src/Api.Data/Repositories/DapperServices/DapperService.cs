@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Api.Data.Contracts.DapperInterfaces;
 using Api.Entities;
+using Api.Entities.Posts;
 
 using Dapper;
 
@@ -15,32 +16,31 @@ namespace Api.Data.Repositories.DapperServices
 {
     public class DapperService<T> : IDapperInterface<T> where T : class, IEntity
     {
-        public DapperService(IConfiguration configuration, ApplicationDbContext context)
+        protected readonly IConfiguration _config;
+
+        public DapperService(IConfiguration config)
         {
-            Configuration = configuration;
-            Context = context;
+            _config = config;
         }
 
-        private IConfiguration Configuration { get; }
-        private ApplicationDbContext Context { get; }
-
-        public async Task AddWithSpAsync(T entity, CancellationToken cancellationToken)
+        public IDbConnection Connection
         {
-            string quary = "SP_Post_Insert";
-            string connectionString = Configuration.GetConnectionString("SqlServer");
-            using IDbConnection db = new SqlConnection(connectionString);
-            await db.ExecuteAsync(quary, entity, commandType: CommandType.StoredProcedure);
+            get
+            {
+                return new SqlConnection(_config.GetConnectionString("SqlServer"));
+            }
         }
 
-        public async Task<IEnumerable<T>> GetAsync(CancellationToken cancellationToken)
+        public async Task AddAsync(T entity, CancellationToken cancellationToken)
         {
-            //TODO:add connection string
-            string connectionString = Configuration.GetConnectionString("SqlServer");
-            //TODO:Sql quary or stord procedore(sp)
-            var quaryPostTest = "SP_Post_GetAll";
+            using IDbConnection db = Connection;
+            await db.ExecuteAsync("SP_Post_Insert", entity, commandType: CommandType.StoredProcedure);
+        }
 
-            using IDbConnection db = new SqlConnection(connectionString);
-            var result = await db.QueryAsync<T>(quaryPostTest, cancellationToken);
+        public async Task<IEnumerable<Post>> GetAsync(CancellationToken cancellationToken)
+        {
+            using IDbConnection db = Connection;
+            var result = await db.QueryAsync<Post>("SP_Post_GetAll", cancellationToken);
             return result;
 
         }
