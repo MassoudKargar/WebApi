@@ -169,6 +169,7 @@ namespace Api.WebFramework.Api
         }
     }
 
+    [ApiVersion("1")]
     public class CrudController<TDto, TSelectDto, TEntity> : CrudController<TDto, TSelectDto, TEntity, int>
         where TDto : BaseDto<TDto, TEntity, int>, new()
         where TSelectDto : BaseDto<TSelectDto, TEntity, int>, new()
@@ -179,7 +180,8 @@ namespace Api.WebFramework.Api
         {
         }
     }
-
+    
+    [ApiVersion("1")]
     public class CrudController<TDto, TEntity> : CrudController<TDto, TDto, TEntity, int>
         where TDto : BaseDto<TDto, TEntity, int>, new()
         where TEntity : class, IEntity<int>, new()
