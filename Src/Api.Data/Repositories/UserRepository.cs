@@ -1,14 +1,15 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-
-using Api.Common;
-using Api.Common.Utilities;
+﻿using Api.Common.Utilities;
 using Api.Data.Contracts;
 using Api.Entities;
 
+using Ccms.Common;
+
 using Microsoft.EntityFrameworkCore;
+
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Api.Data.Repositories
 {

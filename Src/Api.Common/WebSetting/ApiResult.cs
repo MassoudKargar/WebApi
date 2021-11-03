@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-using Api.Common;
-using Api.Common.Utilities;
-
-using Microsoft.AspNetCore.Mvc;
-
-using Newtonsoft.Json;
-
-namespace Api.WebFramework.Api
+﻿namespace Ccms.Common.WebSetting
 {
+    using Api.Common;
+    using Api.Common.Utilities;
+
+    using Microsoft.AspNetCore.Mvc;
+
+    using Newtonsoft.Json;
+
+    using System.Linq;
+
+
     public class ApiResult
     {
         public bool IsSuccess { get; set; }
@@ -17,12 +17,14 @@ namespace Api.WebFramework.Api
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string Message { get; set; }
+        public string Token { get; set; }
 
         public ApiResult(bool isSuccess, ApiResultStatusCode statusCode, string message = null)
         {
             IsSuccess = isSuccess;
             StatusCode = statusCode;
             Message = message ?? statusCode.ToDisplay();
+            Token = null;
         }
 
         #region Implicit Operators

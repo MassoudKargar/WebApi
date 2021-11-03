@@ -11,6 +11,8 @@ using Api.Services;
 using Api.WebApi.Models;
 using Api.WebFramework.Api;
 
+using Ccms.Common.WebSetting;
+
 using ElmahCore;
 
 using Microsoft.AspNetCore.Authorization;

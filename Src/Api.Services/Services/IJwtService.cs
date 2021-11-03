@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using Api.Entities;
 
-using Api.Entities;
+using Ccms.Common;
+
+using System.Threading.Tasks;
 
 namespace Api.Services
 {

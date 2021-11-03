@@ -10,6 +10,8 @@ using Api.WebFramework.Api;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 
+using Ccms.Common.WebSetting;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

@@ -10,6 +10,8 @@ using Api.Services;
 
 using Autofac;
 
+using Ccms.Common;
+
 namespace Api.WebFramework.Configuration
 {
     public static class AutofacConfigurationExtensions

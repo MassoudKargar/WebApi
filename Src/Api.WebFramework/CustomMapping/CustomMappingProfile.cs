@@ -2,6 +2,8 @@
 
 using AutoMapper;
 
+using Ccms.Common.CustomMapping;
+
 namespace Api.WebFramework.CustomMapping
 {
     public class CustomMappingProfile : Profile

@@ -1,4 +1,4 @@
-﻿namespace Api.Common
+﻿namespace Ccms.Common
 {
     //just to mark
     public interface IScopedDependency
@@ -13,4 +13,3 @@
     {
     }
 }
-

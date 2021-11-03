@@ -5,6 +5,8 @@ using Api.WebFramework.CustomMapping;
 
 using AutoMapper;
 
+using Ccms.Common.CustomMapping;
+
 namespace Api.WebFramework.Api
 {
     public abstract class BaseDto<TDto, TEntity, TKey> : IHaveCustomMapping
