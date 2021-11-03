@@ -15,12 +15,12 @@ namespace Api.WebFramework.Filters
         {
             if (context.Result is OkObjectResult okObjectResult)
             {
-                var apiResult = new ApiResult<object>(true,  ApiResultStatusCode.Success, okObjectResult.Value);
+                var apiResult = new ApiResult<object>(true,  ApiResultStatusCode.OK, okObjectResult.Value);
                 context.Result = new JsonResult(apiResult) { StatusCode = okObjectResult.StatusCode };
             }
             else if (context.Result is OkResult okResult)
             {
-                var apiResult = new ApiResult(true, ApiResultStatusCode.Success);
+                var apiResult = new ApiResult(true, ApiResultStatusCode.OK);
                 context.Result = new JsonResult(apiResult) { StatusCode = okResult.StatusCode };
             }
             //return BadRequest() method create an ObjectResult with StatusCode 400 in recent versions, So the following code has changed a bit.
@@ -59,12 +59,12 @@ namespace Api.WebFramework.Filters
             }
             else if (context.Result is ContentResult contentResult)
             {
-                var apiResult = new ApiResult(true, ApiResultStatusCode.Success, contentResult.Content);
+                var apiResult = new ApiResult(true, ApiResultStatusCode.OK, contentResult.Content);
                 context.Result = new JsonResult(apiResult) { StatusCode = contentResult.StatusCode };
             }
             else if (context.Result is ObjectResult objectResult && objectResult.StatusCode == null && !(objectResult.Value is ApiResult))
             {
-                var apiResult = new ApiResult<object>(true, ApiResultStatusCode.Success, objectResult.Value);
+                var apiResult = new ApiResult<object>(true, ApiResultStatusCode.OK, objectResult.Value);
                 context.Result = new JsonResult(apiResult) { StatusCode = objectResult.StatusCode };
             }
 

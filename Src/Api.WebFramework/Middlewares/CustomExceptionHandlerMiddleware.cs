@@ -45,7 +45,7 @@ namespace Api.WebFramework.Middlewares
         {
             string message = null;
             HttpStatusCode httpStatusCode = HttpStatusCode.InternalServerError;
-            ApiResultStatusCode apiStatusCode = ApiResultStatusCode.ServerError;
+            ApiResultStatusCode apiStatusCode = ApiResultStatusCode.InternalServerError;
 
             try
             {
@@ -124,7 +124,7 @@ namespace Api.WebFramework.Middlewares
             void SetUnAuthorizeResponse(Exception exception)
             {
                 httpStatusCode = HttpStatusCode.Unauthorized;
-                apiStatusCode = ApiResultStatusCode.UnAuthorized;
+                apiStatusCode = ApiResultStatusCode.Unauthorized;
 
                 if (_env.IsDevelopment())
                 {

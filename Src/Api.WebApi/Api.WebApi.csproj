@@ -6,7 +6,7 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <DocumentationFile>D:\Development\WebApi\Src\Api.WebApi\MyApi.xml</DocumentationFile>
+    <DocumentationFile>MyApi.xml</DocumentationFile>
     <BaseOutputPath>bin\Debug\</BaseOutputPath>
   </PropertyGroup>
 

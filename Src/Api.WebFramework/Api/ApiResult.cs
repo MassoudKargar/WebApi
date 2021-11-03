@@ -28,7 +28,7 @@ namespace Api.WebFramework.Api
         #region Implicit Operators
         public static implicit operator ApiResult(OkResult result)
         {
-            return new ApiResult(true, ApiResultStatusCode.Success);
+            return new ApiResult(true, ApiResultStatusCode.OK);
         }
 
         public static implicit operator ApiResult(BadRequestResult result)
@@ -49,7 +49,7 @@ namespace Api.WebFramework.Api
 
         public static implicit operator ApiResult(ContentResult result)
         {
-            return new ApiResult(true, ApiResultStatusCode.Success, result.Content);
+            return new ApiResult(true, ApiResultStatusCode.OK, result.Content);
         }
 
         public static implicit operator ApiResult(NotFoundResult result)
@@ -74,17 +74,17 @@ namespace Api.WebFramework.Api
         #region Implicit Operators
         public static implicit operator ApiResult<TData>(TData data)
         {
-            return new ApiResult<TData>(true, ApiResultStatusCode.Success, data);
+            return new ApiResult<TData>(true, ApiResultStatusCode.OK, data);
         }
 
         public static implicit operator ApiResult<TData>(OkResult result)
         {
-            return new ApiResult<TData>(true, ApiResultStatusCode.Success, null);
+            return new ApiResult<TData>(true, ApiResultStatusCode.OK, null);
         }
 
         public static implicit operator ApiResult<TData>(OkObjectResult result)
         {
-            return new ApiResult<TData>(true, ApiResultStatusCode.Success, (TData)result.Value);
+            return new ApiResult<TData>(true, ApiResultStatusCode.OK, (TData)result.Value);
         }
 
         public static implicit operator ApiResult<TData>(BadRequestResult result)
@@ -105,7 +105,7 @@ namespace Api.WebFramework.Api
 
         public static implicit operator ApiResult<TData>(ContentResult result)
         {
-            return new ApiResult<TData>(true, ApiResultStatusCode.Success, null, result.Content);
+            return new ApiResult<TData>(true, ApiResultStatusCode.OK, null, result.Content);
         }
 
         public static implicit operator ApiResult<TData>(NotFoundResult result)

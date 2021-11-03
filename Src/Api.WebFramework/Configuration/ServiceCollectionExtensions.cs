@@ -159,7 +159,7 @@ namespace Api.WebFramework.Configuration
                         //logger.LogError("Authentication failed.", context.Exception);
 
                         if (context.Exception != null)
-                            throw new AppException(ApiResultStatusCode.UnAuthorized, "Authentication failed.", HttpStatusCode.Unauthorized, context.Exception, null);
+                            throw new AppException(ApiResultStatusCode.Unauthorized, "Authentication failed.", HttpStatusCode.Unauthorized, context.Exception, null);
 
                         return Task.CompletedTask;
                     },
@@ -198,8 +198,8 @@ namespace Api.WebFramework.Configuration
                         //logger.LogError("OnChallenge error", context.Error, context.ErrorDescription);
 
                         if (context.AuthenticateFailure != null)
-                            throw new AppException(ApiResultStatusCode.UnAuthorized, "Authenticate failure.", HttpStatusCode.Unauthorized, context.AuthenticateFailure, null);
-                        throw new AppException(ApiResultStatusCode.UnAuthorized, "You are unauthorized to access this resource.", HttpStatusCode.Unauthorized);
+                            throw new AppException(ApiResultStatusCode.Unauthorized, "Authenticate failure.", HttpStatusCode.Unauthorized, context.AuthenticateFailure, null);
+                        throw new AppException(ApiResultStatusCode.Unauthorized, "You are unauthorized to access this resource.", HttpStatusCode.Unauthorized);
 
                         //return Task.CompletedTask;
                     }

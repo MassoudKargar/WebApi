@@ -11,7 +11,7 @@ namespace Api.Common.Exceptions
         public object AdditionalData { get; set; }
 
         public AppException()
-            : this(ApiResultStatusCode.ServerError)
+            : this(ApiResultStatusCode.InternalServerError)
         {
         }
 
@@ -21,7 +21,7 @@ namespace Api.Common.Exceptions
         }
 
         public AppException(string message)
-            : this(ApiResultStatusCode.ServerError, message)
+            : this(ApiResultStatusCode.InternalServerError, message)
         {
         }
 
@@ -31,7 +31,7 @@ namespace Api.Common.Exceptions
         }
 
         public AppException(string message, object additionalData)
-            : this(ApiResultStatusCode.ServerError, message, additionalData)
+            : this(ApiResultStatusCode.InternalServerError, message, additionalData)
         {
         }
 
@@ -56,12 +56,12 @@ namespace Api.Common.Exceptions
         }
 
         public AppException(string message, Exception exception)
-            : this(ApiResultStatusCode.ServerError, message, exception)
+            : this(ApiResultStatusCode.InternalServerError, message, exception)
         {
         }
 
         public AppException(string message, Exception exception, object additionalData)
-            : this(ApiResultStatusCode.ServerError, message, exception, additionalData)
+            : this(ApiResultStatusCode.InternalServerError, message, exception, additionalData)
         {
         }
 
