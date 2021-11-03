@@ -13,6 +13,8 @@ using Api.WebFramework.Api;
 
 using AutoMapper;
 
+using Ccms.Common.WebSetting;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.WebApi.Controllers.V3

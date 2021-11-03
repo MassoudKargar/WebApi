@@ -4,6 +4,8 @@ using System.Reflection;
 
 using AutoMapper;
 
+using Ccms.Common.CustomMapping;
+
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Api.WebFramework.CustomMapping
