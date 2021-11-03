@@ -7,6 +7,7 @@ using Api.Data.Contracts;
 using Api.Entities;
 using Api.Entities.Users;
 using Api.Services;
+using Api.Services.Jwt;
 using Api.WebApi.Models;
 using Api.WebFramework.Api;
 
@@ -24,7 +25,7 @@ namespace Api.WebApi.Controllers.V2
         public Users(
             IUserRepository userRepository, 
             ILogger<V1.Users> logger, 
-            IJwtService jwtService,
+            IJwtInteface jwtService,
             UserManager<User> userManager,
             RoleManager<Role> roleManager, 
             SignInManager<User> signInManager) 

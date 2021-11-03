@@ -22,10 +22,10 @@ namespace Api.WebFramework.Configuration
             containerBuilder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>)).InstancePerLifetimeScope();
             containerBuilder.RegisterGeneric(typeof(DapperService<>)).As(typeof(IDapperInterface<>)).InstancePerLifetimeScope();
 
-            var commonAssembly = typeof(SiteSettings).Assembly;
-            var entitiesAssembly = typeof(IEntity).Assembly;
-            var dataAssembly = typeof(ApplicationDbContext).Assembly;
-            var servicesAssembly = typeof(JwtService).Assembly;
+            var commonAssembly = typeof(CommonAssembly).Assembly;
+            var entitiesAssembly = typeof(EntitiesAssembly).Assembly;
+            var dataAssembly = typeof(DataAssembly).Assembly;
+            var servicesAssembly = typeof(ServicesAssembly).Assembly;
 
             containerBuilder.RegisterAssemblyTypes(commonAssembly, entitiesAssembly, dataAssembly, servicesAssembly)
                 .AssignableTo<IScopedDependency>()

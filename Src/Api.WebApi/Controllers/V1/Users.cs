@@ -8,6 +8,7 @@ using Api.Data.Contracts;
 using Api.Entities;
 using Api.Entities.Users;
 using Api.Services;
+using Api.Services.Jwt;
 using Api.WebApi.Models;
 using Api.WebFramework.Api;
 
@@ -29,14 +30,14 @@ namespace Api.WebApi.Controllers.V1
     {
         private readonly IUserRepository userRepository;
         private readonly ILogger<Users> logger;
-        private readonly IJwtService jwtService;
+        private readonly IJwtInteface jwtService;
         private readonly UserManager<User> userManager;
         private readonly RoleManager<Role> roleManager;
         private readonly SignInManager<User> signInManager;
 
         public Users(IUserRepository userRepository,
             ILogger<Users> logger, 
-            IJwtService jwtService,
+            IJwtInteface jwtService,
             UserManager<User> userManager,
             RoleManager<Role> roleManager, 
             SignInManager<User> signInManager)
@@ -106,7 +107,7 @@ namespace Api.WebApi.Controllers.V1
             //if (user == null)
             //    throw new BadRequestException("نام کاربری یا رمز عبور اشتباه است");
 
-            var jwt = await jwtService.GenerateAsync(user);
+            var jwt = jwtService.Generate(user , new Role());
             return new JsonResult(jwt);
         }
 
